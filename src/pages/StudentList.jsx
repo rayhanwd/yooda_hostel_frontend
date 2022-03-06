@@ -1,8 +1,24 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 const StudentList = () => {
+  //Student(id, fullName, roll, age, class, hall, status)
+  const [students, setStudent] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const fetchFood = async (count) => {
+    try {
+      const res = await axios.get(`https://yoodahostel.herokuapp.com/students?page=${count}`);
+      setStudent(res.data.students)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    fetchFood(count)
+  }, [count])
   return (
     <div className="container mx-auto px-4 sm:px-8 max-w-100">
       <div className="py-8">
@@ -27,16 +43,25 @@ const StudentList = () => {
               <thead>
                 <tr>
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                    Student Name
+                    Student Id
+                  </th>
+                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                    Name
                   </th>
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                     Roll
                   </th>
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                    Shift
+                    Age
                   </th>
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                    Created at
+                    Class
+                  </th>
+                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                    Hall
+                  </th>
+                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                    Status
                   </th>
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                     Action
@@ -44,55 +69,87 @@ const StudentList = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="flex items-center">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        Zihadul Islam
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      1343
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      Day
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      13/12/22
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <Link to="" className="text-green-600 hover:text-green-900">
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
+                {students.map((Student, index) => (
+                  <tr>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.id}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.fullName}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.roll}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.age}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.class}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.hall}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <div className="flex items-center">
+                        <p className="text-gray-900 whitespace-no-wrap">
+                          {Student.status}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <Link to="" className="text-green-600 hover:text-green-900">
+                        Edit
+                      </Link>
+                      <Link to="" className="text-red-600 hover:text-red-900">
+                        Delete
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
               <div className="flex items-center">
-                <button type="button" className="w-full p-3 border rounded-l-full text-gray-600 bg-white hover:bg-gray-100">
+                <button onClick={() => count > 0 && setCount(prevCount => prevCount - 1)} type="button" className="w-full p-3 border rounded-l-full text-gray-600 bg-white hover:bg-gray-100">
                   <MdArrowLeft className="text-md" />
                 </button>
-                <button type="button" className="w-full px-4 py-2 border-t border-b text-base text-green-500 bg-white hover:bg-gray-100 ">
+                <button onClick={() => setCount(1)} type="button" className="w-full px-4 py-2 border-t border-b text-base text-green-500 bg-white hover:bg-gray-100 ">
                   1
                 </button>
-                <button type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
+                <button onClick={() => setCount(2)} type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
                   2
                 </button>
-                <button type="button" className="w-full px-4 py-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">
+                <button onClick={() => setCount(3)} type="button" className="w-full px-4 py-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">
                   3
                 </button>
-                <button type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
+                <button onClick={() => setCount(4)} type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
                   4
                 </button>
-                <button type="button" className="w-full p-3 border-t border-b border-r  rounded-r-full text-gray-600 bg-white hover:bg-gray-100">
+                <button onClick={() => count >= 0 && setCount(prevCount => prevCount + 1)} type="button" className="w-full p-3 border-t border-b border-r  rounded-r-full text-gray-600 bg-white hover:bg-gray-100">
                   <MdArrowRight className="text-md" />
                 </button>
               </div>

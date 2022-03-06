@@ -2,9 +2,9 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const Private = ({ children }) => {
-    const auth = JSON.parse(localStorage.getItem('userInfo'));
+    const token = JSON.parse(localStorage.getItem('token'));
     return (
-        auth?.email ? children : <Navigate to="/login" />
+        token ? children : <Navigate to="/login" />
     );
 }
 

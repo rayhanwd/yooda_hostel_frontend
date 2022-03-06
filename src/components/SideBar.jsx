@@ -9,8 +9,8 @@ import { GiFoodChain } from 'react-icons/gi';
 
 const SideBar = () => {
     const RemovedUser = () => {
-        localStorage.removeItem("userInfo")
-        window.location.reload()
+        localStorage.removeItem("token");
+        window.location.reload();
     }
     return (
         <aside className="bg-white dark:bg-gray-800">
