@@ -1,12 +1,24 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { IoMdClose } from 'react-icons/io';
+
 
 const StudentList = () => {
   //Student(id, fullName, roll, age, class, hall, status)
   const [students, setStudent] = useState([]);
   const [count, setCount] = useState(0);
+  const [stdId, setStdID] = useState('');
+  const [name, setName] = useState('');
+  const [roll, setRoll] = useState(null);
+  const [age, setAge] = useState(null);
+  const [Class, setClass] = useState('');
+  const [HallName, setHallName] = useState('');
+  const [status, setStatus] = useState('');
+  const [edit, setEdit] = useState('');
+  const [editStudent, setEditStudent] = useState();
+  console.log(editStudent);
+  const [loading, setLoading] = useState('');
 
   const fetchFood = async (count) => {
     try {
@@ -18,7 +30,39 @@ const StudentList = () => {
   }
   useEffect(() => {
     fetchFood(count)
-  }, [count])
+  }, [count]);
+  //edit handler 
+  const editHandler = (std) => {
+    setEdit(true);
+    setEditStudent(std);
+  }
+  // edit student
+  const data = {
+    id: stdId,
+    fullName: name,
+    roll: roll,
+    age: age,
+    class: Class,
+    hall: HallName,
+    status: status,
+  }
+  const EditStudent = async () => {
+    setLoading(true)
+    try {
+      const res = await axios({
+        method: 'put',
+        url: `https://yoodahostel.herokuapp.com/foods/${editStudent._id}`,
+        data: data
+      });
+
+      if (res) {
+        setLoading(false);
+        setEdit(false);
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  }
   return (
     <div className="container mx-auto px-4 sm:px-8 max-w-100">
       <div className="py-8">
@@ -63,7 +107,7 @@ const StudentList = () => {
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                     Status
                   </th>
-                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-center text-sm uppercase font-normal">
                     Action
                   </th>
                 </tr>
@@ -121,12 +165,12 @@ const StudentList = () => {
                       </div>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <Link to="" className="text-green-600 hover:text-green-900">
+                      <button onClick={() => editHandler(Student)} className="px-5 py-5 text-green-600 hover:text-green-900">
                         Edit
-                      </Link>
-                      <Link to="" className="text-red-600 hover:text-red-900">
+                      </button>
+                      <button className="px-5 py-5 text-red-600 hover:text-red-900">
                         Delete
-                      </Link>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -155,6 +199,73 @@ const StudentList = () => {
               </div>
             </div>
           </div>
+          {/* edit stduent */}
+
+          {
+            edit &&
+            <div className="my-10 top-16 w-3/6 left-90 bg-white shadow-lg py-10 px-20 absolute">
+              <div className="text-right">
+                <button className="ml-auto" onClick={() => setEdit(false)}><IoMdClose className="text-right text-xl" /></button>
+              </div>
+              <div className="flex flex-wrap items-center justify-between">
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Student ID :
+                  </label>
+                  <input onChange={(e) => setStdID(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.id} placeholder="student id" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Full Name :
+                  </label>
+                  <input onChange={(e) => setName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.fullName} placeholder="student full name" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Roll Number :
+                  </label>
+                  <input onChange={(e) => setRoll(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.roll} placeholder="student's roll number" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Age :
+                  </label>
+                  <input onChange={(e) => setAge(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.age} placeholder="student's age" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Class :
+                  </label>
+                  <input onChange={(e) => setClass(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.class} placeholder="student's class name" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                    Hall Name :
+                  </label>
+                  <input onChange={(e) => setHallName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.hall} placeholder="student's hall name" />
+                </div>
+                <div className="relative px-2 w-1/2">
+                  <label for="id" className="block text-md py-3 font-medium text-gray-700">
+                    Status :
+                  </label>
+                  <select onChange={(e) => setStatus(e.target.value)} className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" name="animals" defaultValue={editStudent.status}>
+                    <option value="" disabled selected>
+                      Select an option
+                    </option>
+                    <option value="active">
+                      Active
+                    </option>
+                    <option value="inActive">
+                      InActive
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <button onClick={() => EditStudent()} type="button" className="my-4 mx-2 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
+                {loading ? "Loading..." : "Save"}
+              </button>
+            </div>
+          }
         </div>
       </div>
     </div>

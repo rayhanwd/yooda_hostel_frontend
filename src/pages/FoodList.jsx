@@ -8,6 +8,7 @@ const FoodList = () => {
   const [count, setCount] = useState(0);
   const [edit, setEdit] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [deletedFood, setDeletedFood] = useState();
   const [editFood, setEditFood] = useState();
   const [foodId, setFoodId] = useState(editFood?.id);
   const [foodName, setFoodName] = useState(editFood?.name);
@@ -55,20 +56,23 @@ const FoodList = () => {
       setLoading(false);
     }
   }
-
-  const DeleteFood = async (foodid) => {
+  const handleDeleteFood = (food) => {
+    setDeletedFood(food);
+    setDeleted(true);
+  }
+  const DeleteFood = async () => {
     setLoading(true)
     try {
       const res = await axios({
         method: 'delete',
-        url: `https://yoodahostel.herokuapp.com/foods/${foodid}`,
+        url: `https://yoodahostel.herokuapp.com/foods/${deletedFood._id}`,
         data: data
       });
 
       if (res) {
         setLoading(false);
         setEdit(false);
-        setDeleted(true);
+        setDeleted(false);
       }
     } catch (err) {
       setLoading(false);
@@ -145,7 +149,7 @@ const FoodList = () => {
                         <button onClick={() => editHandler(food)} className="text-green-600 hover:text-green-900 mx-2">
                           Edit
                         </button>
-                        <button onClick={() => DeleteFood(food._id)} className="text-red-600 hover:text-red-700 ml-6">
+                        <button onClick={() => handleDeleteFood(food)} className="text-red-600 hover:text-red-700 ml-6">
                           Delete
                         </button>
                       </td>
@@ -186,7 +190,7 @@ const FoodList = () => {
                   <label for="id" className="block text-md py-3 font-medium text-gray-700">
                     Food ID :
                   </label>
-                  <input onChange={(e) => setFoodId(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Type the food item id" defaultValue={editFood.id}/>
+                  <input onChange={(e) => setFoodId(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Type the food item id" defaultValue={editFood.id} />
                 </div>
                 <div className="relative my-4">
                   <label for="name" className="block text-md py-3 font-medium text-gray-700">
@@ -198,7 +202,7 @@ const FoodList = () => {
                   <label for="price" className="block text-md py-3 font-medium text-gray-700">
                     Food Price :
                   </label>
-                  <input onChange={(e) => setFoodPrice(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food price" defaultValue={editFood.price}/>
+                  <input onChange={(e) => setFoodPrice(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food price" defaultValue={editFood.price} />
                 </div>
                 <button onClick={() => EditFood()} type="button" className=" my-4 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
                   {loading ? "Loading" : "Save"}
@@ -208,32 +212,13 @@ const FoodList = () => {
           </div>
         </div>
         {/*  */}
-
-        <div className="absolute top-52 left-0 hidden shadow-lg rounded-2xl p-4 bg-white dark:bg-gray-800 w-64 m-auto">
-          <div className="w-full h-full text-center">
-            <div className="flex h-full flex-col justify-between">
-              <svg width="40" height="40" className="mt-4 w-12 h-12 m-auto text-indigo-500" fill="currentColor" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                <path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z">
-                </path>
-              </svg>
-              <p className="text-gray-800 dark:text-gray-200 text-xl font-bold mt-4">
-                Remove food item
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 text-xs py-2 px-6">
-                Are you sure you want to delete this food item ?
-              </p>
-              <div className="flex items-center justify-between gap-4 w-full mt-8">
-                <button type="button" className="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                  Delete
-                </button>
-                <button type="button" className="py-2 px-4  bg-white hover:bg-gray-100 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-indigo-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ">
-                  Cancel
-                </button>
-              </div>
-            </div>
+        <div className={`${!deleted && "hidden"} absolute top-56 left-26 shadow-lg p-4 bg-white w-1/2 m-auto`}>
+          <p className="text-center text-lg font-medium py-6">Are you sure? To remove this</p>
+          <div className="flex items-center justify-center">
+            <button className="text-white py-2 px-6 rounded-sm mr-10 bg-orange-600" onClick={() => DeleteFood()}>Yes</button>
+            <button className="text-white py-2 px-6 rounded-sm bg-orange-600" onClick={() => setDeleted(false)}>No</button>
           </div>
         </div>
-
       </div>
     </section>
   );
