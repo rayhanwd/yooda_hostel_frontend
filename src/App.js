@@ -5,7 +5,6 @@ import Dashboard from './pages/Dashboard';
 import Private from './auth/Private';
 
 const App = () => {
-
   return (
     <BrowserRouter>
     <Routes>

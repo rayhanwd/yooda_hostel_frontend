@@ -17,12 +17,17 @@ const StudentList = () => {
   const [status, setStatus] = useState('');
   const [edit, setEdit] = useState('');
   const [editStudent, setEditStudent] = useState();
-  console.log(editStudent);
+
   const [loading, setLoading] = useState('');
 
   const fetchFood = async (count) => {
     try {
-      const res = await axios.get(`https://yoodahostel.herokuapp.com/students?page=${count}`);
+      const res = await axios.get(`https://yoodahostel.herokuapp.com/api/students?page=${count}`,
+        {
+          headers: {
+            token: JSON.parse(localStorage.getItem('token'))
+          }
+        });
       setStudent(res.data.students)
     } catch (error) {
       console.error(error);
@@ -51,8 +56,11 @@ const StudentList = () => {
     try {
       const res = await axios({
         method: 'put',
-        url: `https://yoodahostel.herokuapp.com/foods/${editStudent._id}`,
-        data: data
+        url: `https://yoodahostel.herokuapp.com/api/foods/${editStudent._id}`,
+        data: data,
+        headers: {
+          token: JSON.parse(localStorage.getItem('token'))
+        }
       });
 
       if (res) {

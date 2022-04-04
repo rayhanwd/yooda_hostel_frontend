@@ -26,8 +26,11 @@ const AddStudent = () => {
     try {
       const res = await axios({
         method: 'post',
-        url: `https://yoodahostel.herokuapp.com/students`,
-        data: data
+        url: `https://yoodahostel.herokuapp.com/api/students`,
+        data: data,
+        headers: {
+          token: JSON.parse(localStorage.getItem('token'))
+        }
       });
       if (res) {
         setLoading(false);

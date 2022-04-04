@@ -15,9 +15,13 @@ const FoodList = () => {
   const [foodPrice, setFoodPrice] = useState(editFood?.price);
   const [loading, setLoading] = useState('');
 
-  const fetchFood = async (count) => {
+  const fetchFood = async (count=0) => {
     try {
-      const res = await axios.get(`https://yoodahostel.herokuapp.com/foods?page=${count}`);
+      const res = await axios.get(`https://yoodahostel.herokuapp.com/api/foods?page=${count}`,{
+        headers: {
+          token: JSON.parse(localStorage.getItem('token')),
+        }
+      });
       setFood(res.data.foods)
     } catch (error) {
       console.error(error);
@@ -44,7 +48,7 @@ const FoodList = () => {
     try {
       const res = await axios({
         method: 'put',
-        url: `https://yoodahostel.herokuapp.com/foods/${editFood._id}`,
+        url: `https://yoodahostel.herokuapp.com/api/foods/${editFood._id}`,
         data: data
       });
 
@@ -65,7 +69,7 @@ const FoodList = () => {
     try {
       const res = await axios({
         method: 'delete',
-        url: `https://yoodahostel.herokuapp.com/foods/${deletedFood._id}`,
+        url: `https://yoodahostel.herokuapp.com/api/foods/${deletedFood._id}`,
         data: data
       });
 

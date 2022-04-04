@@ -19,7 +19,7 @@ const Login = () => {
         try {
             const res = await axios({
                 method: 'post',
-                url: `https://yoodahostel.herokuapp.com/users/login`,
+                url: `https://yoodahostel.herokuapp.com/api/users/login`,
                 data: data
             });
     
@@ -56,7 +56,7 @@ const Login = () => {
                     <label for="password" className="block text-md py-3 font-medium text-white">
                         Password :
                     </label>
-                    <input onChange={(e) => setPassword(e.target.value)} type="text" className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Password" />
+                    <input onChange={(e) => setPassword(e.target.value)} type="password" className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Password" />
                 </div>
                 <button type='submit' className="w-full my-8 px-4 py-2 text-base font-semibold text-center text-white transition duration-200 ease-in bg-green-600 shadow-md hover:bg-green-700 focus:outline-none focus:ring-2">
                     <span className="w-full">
