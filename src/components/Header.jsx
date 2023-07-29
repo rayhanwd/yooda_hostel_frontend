@@ -17,12 +17,6 @@ const Header = () => {
                     <button onClick={() => handleToggle()} className="toggle-sidebar-btn"><FaBars className="text-2xl text-green-600" />
                     </button>
                 </div>
-                <div className="flex relative">
-                    <input type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-transparent" placeholder="Search here..." />
-                    <span className="inline-flex  items-center px-3 border-t bg-white  border-b border-r border-gray-300 text-gray-500 shadow-sm text-sm">
-                        <FaSearch />
-                    </span>
-                </div>
                 <Link to="accountinformation" className="user_info flex items-center">
                     <h6>Admin</h6>
                     <FaUserCircle className="text-2xl mx-5 text-green-600" />

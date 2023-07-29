@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { MdArrowLeft, MdArrowRight } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 
 const FoodList = () => {
@@ -14,22 +13,67 @@ const FoodList = () => {
   const [foodName, setFoodName] = useState(editFood?.name);
   const [foodPrice, setFoodPrice] = useState(editFood?.price);
   const [loading, setLoading] = useState('');
+  const [searchtext, setsearchText] = useState('');
+  const [notfound, setnotfound] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [search, setSearch] = useState(false);
 
-  const fetchFood = async (count=0) => {
+
+
+  const fetchFood = async () => {
+    setnotfound(false);
+    setSearch(false)
     try {
-      const res = await axios.get(`https://yoodahostel.herokuapp.com/api/foods?page=${count}`,{
+      const res = await axios.get(`http://localhost:5000/foods?page=${count}`, {
+
         headers: {
           token: JSON.parse(localStorage.getItem('token')),
         }
       });
-      setFood(res.data.foods)
+      setFood(res.data.foods);
+      setTotalPages(res.data.total);
+
+      if (res.data.foods.length === 0) {
+        setnotfound(true);
+      }
+      else {
+        setFood(res.data.foods);
+        setsearchText('');
+        setnotfound(false);
+      }
     } catch (error) {
       console.error(error);
     }
   }
   useEffect(() => {
-    fetchFood(count)
-  }, [count, edit, deleted])
+    fetchFood()
+  }, [count, edit, deleted]);
+
+
+  const fetchFoodBySearch = async () => {
+    setnotfound(false);
+    setSearch(false);
+    try {
+      const res = await axios.get(`http://localhost:5000/foods?foodname=${searchtext}&page=${count}`, {
+        headers: {
+          token: JSON.parse(localStorage.getItem('token')),
+        }
+      });
+
+      if (res.data.foods.length === 0) {
+        setnotfound(true);
+      } else {
+        setFood(res.data.foods);
+        setsearchText('');
+        setnotfound(false);
+        setSearch(true);
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   // edit food handler
 
   const editHandler = (food) => {
@@ -48,7 +92,7 @@ const FoodList = () => {
     try {
       const res = await axios({
         method: 'put',
-        url: `https://yoodahostel.herokuapp.com/api/foods/${editFood._id}`,
+        url: `http://localhost:5000/foods/${editFood._id}`,
         data: data
       });
 
@@ -69,7 +113,7 @@ const FoodList = () => {
     try {
       const res = await axios({
         method: 'delete',
-        url: `https://yoodahostel.herokuapp.com/api/foods/${deletedFood._id}`,
+        url:`http://localhost:5000/foods/${deletedFood._id}`,
         data: data
       });
 
@@ -91,14 +135,20 @@ const FoodList = () => {
             Food List
           </h2>
           <div className="text-end">
-            <form className="flex flex-col md:flex-row w-3/4 md:w-full max-w-sm md:space-x-3 space-y-3 md:space-y-0 justify-center">
+            <div className="flex flex-col md:flex-row w-3/4 md:w-full max-w-sm md:space-x-3 space-y-3 md:space-y-0 justify-center">
               <div className=" relative ">
-                <input type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="filter" />
+                <input onChange={(e) => setsearchText(e.target.value)} type="text" className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="search by name" value={searchtext} />
               </div>
-              <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200" type="submit">
-                Filter
-              </button>
-            </form>
+              {
+                search ?
+                  <button onClick={() => fetchFood()} className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200">
+                    Reset
+                  </button> :
+                  <button onClick={() => fetchFoodBySearch()} className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-green-600 shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200">
+                    Filter
+                  </button>
+              }
+            </div>
           </div>
         </div>
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -124,7 +174,7 @@ const FoodList = () => {
                 </tr>
               </thead>
               <tbody>
-                {
+                {!notfound ?
                   foods.map((food, index) => (
                     <tr key={food.id}>
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -158,32 +208,20 @@ const FoodList = () => {
                         </button>
                       </td>
                     </tr>
-                  ))
+                  )) :
+                  <h6>Data not found</h6>
                 }
               </tbody>
             </table>
-            <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
+            {<div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
               <div className="flex items-center">
-                <button onClick={() => count > 0 && setCount(prevCount => prevCount - 1)} type="button" className="w-full p-3 border rounded-l-full text-gray-600 bg-white hover:bg-gray-100">
-                  <MdArrowLeft className="text-md" />
-                </button>
-                <button onClick={() => setCount(1)} type="button" className="w-full px-4 py-2 border-t border-b text-base text-green-500 bg-white hover:bg-gray-100 ">
-                  1
-                </button>
-                <button onClick={() => setCount(2)} type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                  2
-                </button>
-                <button onClick={() => setCount(3)} type="button" className="w-full px-4 py-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">
-                  3
-                </button>
-                <button onClick={() => setCount(4)} type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">
-                  4
-                </button>
-                <button onClick={() => count >= 0 && setCount(prevCount => prevCount + 1)} type="button" className="w-full p-3 border-t border-b border-r  rounded-r-full text-gray-600 bg-white hover:bg-gray-100">
-                  <MdArrowRight className="text-md" />
-                </button>
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pg, index) => (
+                  <button onClick={() => setCount(pg - 1)} type="button" className="w-full px-4 py-2 border-t border-b text-base text-green-500 bg-white hover:bg-gray-100">
+                    {pg}
+                  </button>
+                ))}
               </div>
-            </div>
+            </div>}
             {
               edit &&
               <div className={`my-10 top-16 w-3/6 left-90 bg-white shadow-lg py-10 px-20 absolute`}>

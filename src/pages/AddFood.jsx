@@ -16,7 +16,7 @@ const AddFood = () => {
     try {
       const res = await axios({
         method: 'post',
-        url: `https://yoodahostel.herokuapp.com/api/foods`,
+        url: `http://localhost:5000/foods`,
         data: data,
         headers: {
           token: JSON.parse(localStorage.getItem('token')),

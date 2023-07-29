@@ -26,7 +26,7 @@ const AddStudent = () => {
     try {
       const res = await axios({
         method: 'post',
-        url: `https://yoodahostel.herokuapp.com/api/students`,
+        url: `http://localhost:5000/students`,
         data: data,
         headers: {
           token: JSON.parse(localStorage.getItem('token'))

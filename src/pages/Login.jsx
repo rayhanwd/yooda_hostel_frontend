@@ -19,7 +19,7 @@ const Login = () => {
         try {
             const res = await axios({
                 method: 'post',
-                url: `https://yoodahostel.herokuapp.com/api/users/login`,
+                url: `http://localhost:5000/users/login`,
                 data: data
             });
     
