@@ -272,81 +272,89 @@ const StudentList = () => {
             </div>
           </div>
           {/* edit stduent */}
-
-          {
-            edit &&
-            <div className="my-10 top-16 w-3/6 left-90 bg-white shadow-lg py-10 px-20 absolute">
-              <div className="text-right">
-                <button className="ml-auto" onClick={() => setEdit(false)}><IoMdClose className="text-right text-xl" /></button>
+          {edit && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div onClick={() => setEdit(false)} className="fixed inset-0 bg-gray-900 opacity-80"></div>
+              <div className="bg-white p-6 rounded shadow-lg relative w-6/12">
+                <div className="text-right">
+                  <button className="ml-auto" onClick={() => setEdit(false)}><IoMdClose className="text-right text-xl" /></button>
+                </div>
+                <div className="flex flex-wrap items-center justify-between">
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Student ID :
+                    </label>
+                    <input onChange={(e) => setStdID(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.id} placeholder="student id" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Full Name :
+                    </label>
+                    <input onChange={(e) => setName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.fullName} placeholder="student full name" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Roll Number :
+                    </label>
+                    <input onChange={(e) => setRoll(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.roll} placeholder="student's roll number" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Age :
+                    </label>
+                    <input onChange={(e) => setAge(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.age} placeholder="student's age" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Class :
+                    </label>
+                    <input onChange={(e) => setClass(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.class} placeholder="student's class name" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Hall Name :
+                    </label>
+                    <input onChange={(e) => setHallName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.hall} placeholder="student's hall name" />
+                  </div>
+                  <div className="relative px-2 w-1/2">
+                    <label for="id" className="block text-md py-3 font-medium text-gray-700">
+                      Status :
+                    </label>
+                    <select onChange={(e) => setStatus(e.target.value)} className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" name="animals" defaultValue={editStudent.status}>
+                      <option value="" disabled selected>
+                        Select an option
+                      </option>
+                      <option value="active">
+                        Active
+                      </option>
+                      <option value="inActive">
+                        InActive
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <button onClick={() => EditStudent()} type="button" className="my-4 mx-2 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
+                  {loading ? "Loading..." : "Save"}
+                </button>
               </div>
-              <div className="flex flex-wrap items-center justify-between">
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Student ID :
-                  </label>
-                  <input onChange={(e) => setStdID(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.id} placeholder="student id" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Full Name :
-                  </label>
-                  <input onChange={(e) => setName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.fullName} placeholder="student full name" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Roll Number :
-                  </label>
-                  <input onChange={(e) => setRoll(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.roll} placeholder="student's roll number" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Age :
-                  </label>
-                  <input onChange={(e) => setAge(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.age} placeholder="student's age" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Class :
-                  </label>
-                  <input onChange={(e) => setClass(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.class} placeholder="student's class name" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Hall Name :
-                  </label>
-                  <input onChange={(e) => setHallName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" defaultValue={editStudent.hall} placeholder="student's hall name" />
-                </div>
-                <div className="relative px-2 w-1/2">
-                  <label for="id" className="block text-md py-3 font-medium text-gray-700">
-                    Status :
-                  </label>
-                  <select onChange={(e) => setStatus(e.target.value)} className="flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" name="animals" defaultValue={editStudent.status}>
-                    <option value="" disabled selected>
-                      Select an option
-                    </option>
-                    <option value="active">
-                      Active
-                    </option>
-                    <option value="inActive">
-                      InActive
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <button onClick={() => EditStudent()} type="button" className="my-4 mx-2 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
-                {loading ? "Loading..." : "Save"}
-              </button>
             </div>
-          }
+          )}
+
         </div>
       </div>
-      <div className={`${!deleted && "hidden"} absolute top-56 left-26 shadow-lg p-4 bg-white w-1/2 m-auto`}>
-        <p className="text-center text-lg font-medium py-6">Are you sure? To remove this</p>
-        <div className="flex items-center justify-center">
-          <button className="text-white py-2 px-6 rounded-sm mr-10 bg-orange-600" onClick={() => DeleteStudent()}>Yes</button>
-          <button className="text-white py-2 px-6 rounded-sm bg-orange-600" onClick={() => setDeleted(false)}>No</button>
+
+      {deleted && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div onClick={() => setDeleted(false)} className="fixed inset-0 bg-gray-900 opacity-80"></div>
+          <div className="bg-white p-6 rounded shadow-lg relative">
+            <p className="text-center text-lg font-medium py-6">Are you sure? To remove this</p>
+            <div className="flex items-center justify-center">
+              <button className="text-white py-2 px-6 rounded-sm mr-10 bg-orange-600" onClick={() => DeleteStudent()}>Yes</button>
+              <button className="text-white py-2 px-6 rounded-sm bg-orange-600" onClick={() => setDeleted(false)}>No</button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

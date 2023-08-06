@@ -113,7 +113,7 @@ const FoodList = () => {
     try {
       const res = await axios({
         method: 'delete',
-        url:`http://localhost:5000/foods/${deletedFood._id}`,
+        url: `http://localhost:5000/foods/${deletedFood._id}`,
         data: data
       });
 
@@ -165,9 +165,7 @@ const FoodList = () => {
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                     Food Price $
                   </th>
-                  <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
-                    Created at
-                  </th>
+                
                   <th scope="col" className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-center text-sm uppercase font-normal">
                     Action
                   </th>
@@ -194,12 +192,8 @@ const FoodList = () => {
                           {food.price}
                         </p>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          13/12/22
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <button onClick={() => editHandler(food)} className="text-green-600 hover:text-green-900 mx-2">
                           Edit
                         </button>
@@ -222,45 +216,53 @@ const FoodList = () => {
                 ))}
               </div>
             </div>}
-            {
-              edit &&
-              <div className={`my-10 top-16 w-3/6 left-90 bg-white shadow-lg py-10 px-20 absolute`}>
-                <div className="text-right">
-                  <button className="ml-auto" onClick={() => setEdit(false)}><IoMdClose className="text-right text-xl" /></button>
+
+            {edit && (
+              <div className="fixed inset-0 flex items-center justify-center z-50">
+                <div onClick={() => setEdit(false)} className="fixed inset-0 bg-gray-900 opacity-80"></div>
+                <div className="bg-white p-6 rounded shadow-lg relative w-6/12">
+                  <div className="text-right">
+                    <button className="ml-auto" onClick={() => setEdit(false)}><IoMdClose className="text-right text-xl" /></button>
+                  </div>
+                  <div className="relative my-2">
+                    <label for="id" className="block text-md py-3 font-medium text-gray-700">
+                      Food ID :
+                    </label>
+                    <input onChange={(e) => setFoodId(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Type the food item id" defaultValue={editFood.id} />
+                  </div>
+                  <div className="relative my-4">
+                    <label for="name" className="block text-md py-3 font-medium text-gray-700">
+                      Food Name :
+                    </label>
+                    <input onChange={(e) => setFoodName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food name" defaultValue={editFood.name} />
+                  </div>
+                  <div className="relative my-4">
+                    <label for="price" className="block text-md py-3 font-medium text-gray-700">
+                      Food Price :
+                    </label>
+                    <input onChange={(e) => setFoodPrice(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food price" defaultValue={editFood.price} />
+                  </div>
+                  <button onClick={() => EditFood()} type="button" className=" my-4 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
+                    {loading ? "Loading" : "Save"}
+                  </button>
                 </div>
-                <div className="relative my-2">
-                  <label for="id" className="block text-md py-3 font-medium text-gray-700">
-                    Food ID :
-                  </label>
-                  <input onChange={(e) => setFoodId(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Type the food item id" defaultValue={editFood.id} />
-                </div>
-                <div className="relative my-4">
-                  <label for="name" className="block text-md py-3 font-medium text-gray-700">
-                    Food Name :
-                  </label>
-                  <input onChange={(e) => setFoodName(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food name" defaultValue={editFood.name} />
-                </div>
-                <div className="relative my-4">
-                  <label for="price" className="block text-md py-3 font-medium text-gray-700">
-                    Food Price :
-                  </label>
-                  <input onChange={(e) => setFoodPrice(e.target.value)} type="text" className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Food price" defaultValue={editFood.price} />
-                </div>
-                <button onClick={() => EditFood()} type="button" className=" my-4 py-2 px-4  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 ">
-                  {loading ? "Loading" : "Save"}
-                </button>
               </div>
-            }
+            )}
+
           </div>
         </div>
-        {/*  */}
-        <div className={`${!deleted && "hidden"} absolute top-56 left-26 shadow-lg p-4 bg-white w-1/2 m-auto`}>
-          <p className="text-center text-lg font-medium py-6">Are you sure? To remove this</p>
-          <div className="flex items-center justify-center">
-            <button className="text-white py-2 px-6 rounded-sm mr-10 bg-orange-600" onClick={() => DeleteFood()}>Yes</button>
-            <button className="text-white py-2 px-6 rounded-sm bg-orange-600" onClick={() => setDeleted(false)}>No</button>
+        {deleted && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div onClick={() => setDeleted(false)} className="fixed inset-0 bg-gray-900 opacity-80"></div>
+            <div className="bg-white p-6 rounded shadow-lg relative">
+              <p className="text-center text-lg font-medium py-6">Are you sure? To remove this</p>
+              <div className="flex items-center justify-center">
+                <button className="text-white py-2 px-6 rounded-sm mr-10 bg-orange-600" onClick={() => DeleteFood()}>Yes</button>
+                <button className="text-white py-2 px-6 rounded-sm bg-orange-600" onClick={() => setDeleted(false)}>No</button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
